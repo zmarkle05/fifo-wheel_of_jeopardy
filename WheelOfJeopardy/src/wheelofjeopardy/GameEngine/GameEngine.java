@@ -1,9 +1,10 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ *
  */
 package wheelofjeopardy.GameEngine;
+
+import wheelofjeopardy.GameEngine.Player;
+import wheelofjeopardy.GameEngine.StatisticTracker;
 
 /**
  *
@@ -11,6 +12,20 @@ package wheelofjeopardy.GameEngine;
  */
 public class GameEngine 
 {
+        
+    public static int questionsLeft;
+    private static Player player1;
+    private static Player player2;
+    public  static StatisticTracker statTracker;
+    
+    public GameEngine()
+    {
+        player1 = new Player("Player 1");
+        player2 = new Player("Player 2");
+        
+        statTracker = new StatisticTracker();
+    }
+
     public static boolean compareAnswer()
     {
        return false;
