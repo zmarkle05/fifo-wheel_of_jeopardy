@@ -1,6 +1,13 @@
+package test.engine;
+
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
+/**
+ * This class contains the tests for the GameEngine class functionality.
+ *
+ * @author zac
+ */
 public class TestGameEngine {
    	@Test
    	public void testCompareAnswer() {
