@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * 
  */
 package wheelofjeopardy.UserInterface;
 
@@ -10,5 +8,10 @@ package wheelofjeopardy.UserInterface;
  * @author adam
  */
 public class GameBoard {
+    
+    public GameBoard()
+    {
+        // TODO create 30 squares with each category having six
+    }
     
 }

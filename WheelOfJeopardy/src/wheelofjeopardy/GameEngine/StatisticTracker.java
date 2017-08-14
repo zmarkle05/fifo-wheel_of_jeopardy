@@ -23,7 +23,7 @@ public class StatisticTracker
         player2Score  = 0;
         answerTimer   = 0.0;
         numberOfSpins = 0;
-        currentRound  = 0;
+        currentRound  = 1;
                 
     }
     
@@ -65,7 +65,7 @@ public class StatisticTracker
        
    }
    
-   public static int getPlayerScore(int playerNum)
+   public int getPlayerScore(int playerNum)
    {
        if (playerNum == 1)
        {
@@ -77,9 +77,24 @@ public class StatisticTracker
        }
    }
    
-   public static int getNumberOfSpins()
+   public int getNumberOfSpins()
    {
        return numberOfSpins;
+   }
+   
+   public void incrementRound()
+   {
+       currentRound++;
+   }
+   
+   public int getRound()
+   {
+       return currentRound;
+   }
+   
+   public static void reset()
+   {
+       
    }
 }
 

@@ -55,4 +55,9 @@ public class Player
         
     }
     
+    public void setTurn(boolean changeTurn)
+    {
+        isTurn = changeTurn;
+    }
+    
 }

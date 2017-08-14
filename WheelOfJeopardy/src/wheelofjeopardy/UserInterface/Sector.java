@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * 
  */
 package wheelofjeopardy.UserInterface;
 
@@ -9,6 +7,30 @@ package wheelofjeopardy.UserInterface;
  *
  * @author adam
  */
-public class Sector {
+public class Sector 
+{   
+    public enum SectorType
+    {
+        SPIN_AGAIN, OPP_CHOICE, PLAYER_CHOICE, BANKRUPT,
+        CATEGORY, FREE_TURN, LOSE_TURN  
+    }
+    
+    private String name;
+    private SectorType type;
+    
+    public Sector(SectorType type)
+    {
+        this.type = type;
+    }
+    
+    public SectorType getType()
+    {
+        return type;
+    }
+    
+    public String getName()
+    {
+        return name;
+    }
     
 }
