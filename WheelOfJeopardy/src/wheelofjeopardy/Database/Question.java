@@ -15,9 +15,9 @@ public class Question
     private int pointValue;
     private boolean answered;
     
-    public void createQuestion(String quest,
-                               String answ,
-                               int    value)
+    public Question(String quest,
+                    String answ,
+                    int    value)
     {
         question   = quest;
         answer     = answ;

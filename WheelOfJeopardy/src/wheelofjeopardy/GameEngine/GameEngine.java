@@ -4,6 +4,8 @@
 package wheelofjeopardy.GameEngine;
 
 import wheelofjeopardy.UserInterface.*;
+import wheelofjeopardy.Database.Database;
+import wheelofjeopardy.Database.Question;
 
 /**
  *
@@ -18,6 +20,7 @@ public class GameEngine
     private static Player currPlayer;
     public  static StatisticTracker statTracker;
     public  UserInterface userInterface;  
+    public  Database database;
     
     public GameEngine()
     {
@@ -28,12 +31,58 @@ public class GameEngine
         
         statTracker = new StatisticTracker();
         
-        userInterface = new UserInterface();
+        // TODO create CSV and add to database
+        database = new Database("");
+        
+        userInterface = new UserInterface(database.getCategories());
     }
 
-    public static boolean compareAnswer()
+    public void compareAnswer(String category)
     {
-       return false;
+        Question question = database.getQuestion(category);
+        
+        if (question != null)
+        {
+            //TODO pass question to GUI for user to answer
+            String userAnswer = "";
+                
+            String correctAnswer = question.getAnswer();
+        
+            int pointValue = question.getPointValue();
+                
+            boolean isCorrect = userAnswer.toLowerCase().equals(correctAnswer.toLowerCase());
+       
+            if (isCorrect)
+            {
+                if (currPlayer.getName().equals("Player 1"))
+                {
+                    statTracker.player1Score = statTracker.player1Score  + pointValue;
+                }
+                else
+                {
+                    statTracker.player2Score = statTracker.player2Score  + pointValue;
+                }
+           
+                endTurn();
+            }
+            else if (currPlayer.getFreeTokens() > 0 && 
+                     statTracker.getNumberOfSpins() != 50)
+            {
+                // TODO prompt user if they would like to use a token
+                if (true) //player selected to use token
+                {
+                    currPlayer.useToken();
+                }
+                else
+                {
+                    endTurn();
+                }
+            }
+        }
+        else
+        {
+            // how should we handle categories that run out of questions?
+        }
     }
     
     public void endRound()
@@ -72,6 +121,8 @@ public class GameEngine
     
     public static void endTurn()
     {
+        
+        //TODO notify GUI of change of turns
         if (currPlayer.getName().equals("Player 1"))
         {
             currPlayer = player2;
@@ -117,38 +168,56 @@ public class GameEngine
                 // Set opposite player's turn to true but give player option to use
                 // free token if they have any first
                 loseTurn();
+                break;
             }
             case BANKRUPT:
             {
                  bankrupt();
+                 break;
             }
             case OPP_CHOICE:
             {
                 // allow other play to choose a category
+                // TODO send message to GUI notifying opponent player to choose
+                System.out.println("Opponent Player Choose Category");
+                String category = "";
+                compareAnswer(category);
+                break;
             }
             case FREE_TURN:
             {
                 currPlayer.incrementTokens();
+                break;
             }
             case SPIN_AGAIN:
             {
                  // player should be promted to spin again from GUI
-                playGame();
+                break;
             }
             case PLAYER_CHOICE:
             {
                   // player can choose any category
+                // TODO send message to GUI notifying player to choose
+                String category = "";
+                compareAnswer(category);
+                break;
             }
             case CATEGORY:
             {
                 //should be certain category, grab category name and display question
                 // to the player
+                //grab category name
+                String sectorName = userInterface.retrieveSectorName();
+                compareAnswer(sectorName);
+                break;
             }
             default:
             {
                 //INVALID
             }
-        }      
+        }
+        
+        playGame();
     }
     
     public void loseTurn()
@@ -160,7 +229,6 @@ public class GameEngine
             if (true) //player selected to use token
             {
                 currPlayer.useToken();
-                playGame();
             }
             else
             {
@@ -185,6 +253,7 @@ public class GameEngine
             statTracker.player2Score = 0; 
             // TODO DISPLAY TO GUI
         }
+        
         endTurn();
     }
 

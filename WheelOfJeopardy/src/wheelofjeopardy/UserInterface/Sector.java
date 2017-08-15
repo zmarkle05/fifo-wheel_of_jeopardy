@@ -18,9 +18,10 @@ public class Sector
     private String name;
     private SectorType type;
     
-    public Sector(SectorType type)
+    public Sector(SectorType type, String name)
     {
         this.type = type;
+        this.name = name;
     }
     
     public SectorType getType()

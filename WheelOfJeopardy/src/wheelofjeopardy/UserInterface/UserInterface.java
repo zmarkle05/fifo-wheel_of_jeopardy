@@ -13,10 +13,10 @@ public class UserInterface {
     private static GameBoard board;
     private static InformationDisplay infoDisplay;
     
-    public UserInterface()
+    public UserInterface(String[] catNames)
     {
         // TODO pass categories to the wheel
-        wheel = new Wheel();
+        wheel = new Wheel(catNames);
         board = new GameBoard();
         infoDisplay = new InformationDisplay();
     }
@@ -26,6 +26,11 @@ public class UserInterface {
         wheel.spin();
         
         return wheel.getCurrentSector().getType();
+    }
+    
+    public String retrieveSectorName()
+    {
+        return wheel.getCurrSectorName();
     }
     
 }

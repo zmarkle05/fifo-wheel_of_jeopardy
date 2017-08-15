@@ -29,7 +29,7 @@ public class StatisticTracker
                 
     }
     
-   public static void incrementScore(int playerNum)
+   public void incrementScore(int playerNum)
    {
        if (playerNum == 1)
        {
@@ -42,7 +42,7 @@ public class StatisticTracker
        
    }
    
-   public static void decrementScore(int playerNum)
+   public void decrementScore(int playerNum)
    {
        if (playerNum == 1)
        {
@@ -55,7 +55,7 @@ public class StatisticTracker
        
    }
    
-   public static void incrementTimer()
+   public void incrementTimer()
    {
        answerTimer++;
        

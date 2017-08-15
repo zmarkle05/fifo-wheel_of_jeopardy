@@ -4,6 +4,7 @@
 package wheelofjeopardy.Database;
 
 import wheelofjeopardy.Database.Question;
+import java.util.*;
 
 /**
  *
@@ -12,12 +13,12 @@ import wheelofjeopardy.Database.Question;
 public class Category 
 {
     private String categoryName;
-    private Question[] catQuestions;
+    private Queue<Question> catQuestions;
     
     public Category(String catName)
     {
         categoryName = catName;
-        catQuestions = new Question[5];
+        catQuestions = new LinkedList<Question>();
     }
     
     public String getCatName()
@@ -27,6 +28,22 @@ public class Category
     
     public boolean outOfQuestions()
     {
-        return false;
+        return catQuestions.isEmpty();
+    }
+    
+    public void addQuestion(String question,
+                            String answer)
+    {
+        catQuestions.add(new Question(question, answer, 0));
+    }
+    
+    public Question removeQuestion()
+    {
+        return catQuestions.poll();
+    }
+    
+    public Question retrieveQuestion()
+    {
+        return catQuestions.peek();
     }
 }
