@@ -34,7 +34,6 @@ public class Wheel
         
         // randomize order of Sectors
         Collections.shuffle(gameSectors);
-        
     }
     
     public Sector getCurrentSector()

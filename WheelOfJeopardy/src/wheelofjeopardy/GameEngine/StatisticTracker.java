@@ -11,11 +11,13 @@ package wheelofjeopardy.GameEngine;
  */
 public class StatisticTracker 
 {
-    public static int player1Score;
-    public static int player2Score;
-    private static double answerTimer;
-    private static int numberOfSpins;
-    private static int currentRound;
+    public int player1Score;
+    public int player2Score;
+    public int player1TotScore;
+    public int player2TotScore;
+    private double answerTimer;
+    private int numberOfSpins;
+    private int currentRound;
     
     public StatisticTracker()
     {
@@ -59,7 +61,7 @@ public class StatisticTracker
        
    }
    
-   public static void incrementSpins()
+   public void incrementSpins()
    {
        numberOfSpins++;
        

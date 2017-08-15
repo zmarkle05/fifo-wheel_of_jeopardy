@@ -9,19 +9,39 @@ package wheelofjeopardy.Database;
  */
 public class Question 
 {
-    public static void createQuestion()
+    
+    private String question;
+    private String answer;
+    private int pointValue;
+    private boolean answered;
+    
+    public void createQuestion(String quest,
+                               String answ,
+                               int    value)
     {
-        
+        question   = quest;
+        answer     = answ;
+        pointValue = value;
+        answered   = false;
     }
     
-    public static String getAnswer()
+    public String getAnswer()
     {
-        return "";
+        return answer;
     }
     
-    public static int getPointValue()
+    public String getQuestion()
     {
-        return 1;
+        return question;
     }
     
+    public int getPointValue()
+    {
+        return pointValue;
+    }
+    
+    public boolean isAnswered()
+    {
+        return answered;
+    }
 }

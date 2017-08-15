@@ -12,13 +12,13 @@ package wheelofjeopardy.GameEngine;
 public class Player 
 {
     private static String  name;
-    private static boolean isTurn;
-    private static int     numFreeTokens;
+    private boolean isTurn;
+    private int     numFreeTokens;
     
-    public Player(String playerName)
+    public Player(String playerName, boolean isTurn)
     {
         this.name = playerName;
-        this.isTurn = false;
+        this.isTurn = isTurn;
         this.numFreeTokens = 0;
     }
     
@@ -27,7 +27,7 @@ public class Player
         return false;
     }
     
-    public static boolean useToken()
+    public boolean useToken()
     {
         if (numFreeTokens == 0)
         {
@@ -58,6 +58,26 @@ public class Player
     public void setTurn(boolean changeTurn)
     {
         isTurn = changeTurn;
+    }
+    
+    public boolean turnFlag()
+    {
+        return isTurn;
+    }
+    
+    public int getFreeTokens()
+    {
+        return numFreeTokens;
+    }
+    
+    public void incrementTokens()
+    {
+        numFreeTokens++;
+    }
+    
+    public String getName()
+    {
+        return name;
     }
     
 }
