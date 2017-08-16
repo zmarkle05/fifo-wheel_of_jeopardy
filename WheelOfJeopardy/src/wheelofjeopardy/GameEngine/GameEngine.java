@@ -32,7 +32,7 @@ public class GameEngine
         statTracker = new StatisticTracker();
         
         // TODO create CSV and add to database
-        database = new Database("");
+        database = new Database("./database.csv");
         
         userInterface = new UserInterface(database.getCategories());
     }

@@ -4,6 +4,7 @@
 package wheelofjeopardy.Database;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.*;
 
 import wheelofjeopardy.Database.Category;
@@ -87,8 +88,10 @@ public class Database
         //TODO populate 6 category objects from CSV
         try {
             BufferedReader br = null;
+            br = new BufferedReader(new FileReader(csvPath));
             String line = "";
             String delimiter = ",";
+            
             line = br.readLine();
             String[] categories = line.split(delimiter);
             
