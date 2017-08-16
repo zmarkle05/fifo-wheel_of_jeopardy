@@ -130,4 +130,10 @@ public class Database
     {
         //TODO if time for additional functionality
     }
+    
+    public Database getDatabase() {
+        
+        
+        return this;
+    }
 }

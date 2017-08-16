@@ -3,6 +3,9 @@
  */
 package wheelofjeopardy.UserInterface;
 
+import java.util.ArrayList;
+import wheelofjeopardy.Database.Database;
+
 /**
  *
  * @author adam
@@ -13,11 +16,11 @@ public class UserInterface {
     private static GameBoard board;
     private static InformationDisplay infoDisplay;
     
-    public UserInterface(String[] catNames)
+    public UserInterface(Database db)
     {
         // TODO pass categories to the wheel
-        wheel = new Wheel(catNames);
-        board = new GameBoard();
+        wheel = new Wheel(db.getCategories());
+        board = new GameBoard(db);
         infoDisplay = new InformationDisplay();
     }
     

@@ -31,10 +31,9 @@ public class GameEngine
         
         statTracker = new StatisticTracker();
         
-        // TODO create CSV and add to database
         database = new Database("./database.csv");
         
-        userInterface = new UserInterface(database.getCategories());
+        userInterface = new UserInterface(database);
     }
 
     public void compareAnswer(String category)
