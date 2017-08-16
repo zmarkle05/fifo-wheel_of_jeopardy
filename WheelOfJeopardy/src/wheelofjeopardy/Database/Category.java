@@ -14,10 +14,13 @@ public class Category
 {
     private String categoryName;
     private Queue<Question> catQuestions;
+    private int round;
     
-    public Category(String catName)
+    public Category(String catName, int roundNum)
     {
         categoryName = catName;
+        round        = roundNum;
+        
         catQuestions = new LinkedList<Question>();
     }
     
@@ -45,5 +48,10 @@ public class Category
     public Question retrieveQuestion()
     {
         return catQuestions.peek();
+    }
+    
+    public int getRound()
+    {
+        return round;
     }
 }
