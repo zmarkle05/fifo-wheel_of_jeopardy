@@ -63,7 +63,7 @@ public class Database
         }
         else
         {
-            //shouldn't happen
+            question = new Question("", "", 0);
         }
         
         return question;
