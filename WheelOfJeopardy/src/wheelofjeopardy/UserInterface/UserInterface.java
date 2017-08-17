@@ -36,14 +36,10 @@ public class UserInterface {
     
     public UserInterface(Database db)
     {
-        
-          // TODO pass categories to the wheel
-        wheel = new Wheel(db.getCategories());
-        board = new GameBoard(db);
-        infoDisplay = new InformationDisplay();
-        
+       
         Display display = new Display();
         Shell shell = new Shell(display);
+        shell.setMaximized(true);
         FillLayout fillLayout = new FillLayout();
         fillLayout.marginHeight = 5;
         fillLayout.marginWidth = 5;
@@ -65,7 +61,7 @@ public class UserInterface {
         fData.top = new FormAttachment( 0 );
         fData.left = new FormAttachment( 0 );
         fData.right = new FormAttachment( 50 ); // Locks on 10% of the view
-        fData.bottom = new FormAttachment( 50 );
+        fData.bottom = new FormAttachment( 18 );
         innerLeftTop.setLayoutData( fData );
         GridData gd = new GridData(SWT.FILL, SWT.FILL, true,true);
        
@@ -95,8 +91,8 @@ public class UserInterface {
         
         // SPIN WHEEL AREA
         Composite innerLeftBottom = new Composite( outer, SWT.BORDER );
-        innerLeftTop.setLayout( new GridLayout() );
-        innerLeftTop.setBackground( new Color( null, 232, 223, 255 ) ); // Blue
+        innerLeftBottom.setLayout( fillLayout );
+        innerLeftBottom.setBackground( new Color( null, 232, 223, 255 ) ); // Blue
         fData = new FormData();
         fData.top = new FormAttachment( innerLeftTop );
         fData.left = new FormAttachment( 0 );
@@ -114,6 +110,13 @@ public class UserInterface {
         fData.right = new FormAttachment( 100 );
         fData.bottom = new FormAttachment( 100 );
         innerRight.setLayoutData( fData );
+        
+        wheel = new Wheel(db.getCategories(), innerLeftBottom, SWT.NONE);
+        board = new GameBoard(db);
+        infoDisplay = new InformationDisplay();
+        
+        setListeners();
+        
         shell.open();
         while (!shell.isDisposed()) {
             if (!display.readAndDispatch()) {
@@ -122,13 +125,11 @@ public class UserInterface {
         }
         
         display.dispose();
-      
     }
     
     public Sector.SectorType spinWheel()
     {
         wheel.spin();
-        
         return wheel.getCurrentSector().getType();
     }
     
@@ -144,10 +145,11 @@ public class UserInterface {
                 if (event.widget == submitBtn) {
                     
                 } else if (event.widget == spinBtn) {
-                    
+                    wheel.spin();
+                    System.out.println(wheel.getCurrSectorName());
                 }
             }
-            
         };
+        spinBtn.addListener(SWT.Selection,listener);
     }
 }
