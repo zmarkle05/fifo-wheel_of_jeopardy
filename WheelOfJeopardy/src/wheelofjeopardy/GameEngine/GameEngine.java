@@ -104,17 +104,14 @@ public class GameEngine
         if (player1Score > player2Score)
         {
             // TODO inform GUI to display winner
-            System.out.println("Player1 won the game");
         }
         else if (player2Score > player1Score)
         {
             // TODO inform GUI to display winner
-            System.out.println("Player2 won the game");
         }
         else
         {
             // TODO inform GUI to display Tie
-            System.out.println("Tie Game");
         }
     }
     
@@ -160,7 +157,6 @@ public class GameEngine
     
     public void performSectorOperation(Sector.SectorType sector)
     {
-        System.out.println("Sector: " + sector.toString());
         switch(sector)
         {
             case LOSE_TURN:
@@ -179,10 +175,9 @@ public class GameEngine
             {
                 // allow other play to choose a category
                 // TODO send message to GUI notifying opponent player to choose
-                System.out.println("Opponent Player Choose Category");
-                String category   = ""; //userInterface.getCategory();
-                String userAnswer = ""; //userInterface.getUserAnswer();
-                compareAnswer(category, userAnswer );
+                //String category   = userInterface.getCategory();
+                //String userAnswer = userInterface.getUserAnswer();
+                compareAnswer("", "");
                 break;
             }
             case FREE_TURN:
