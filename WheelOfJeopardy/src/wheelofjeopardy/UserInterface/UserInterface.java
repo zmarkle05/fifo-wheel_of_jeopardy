@@ -3,6 +3,7 @@
  */
 package wheelofjeopardy.UserInterface;
 
+import java.util.ArrayList;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
@@ -11,7 +12,6 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -19,8 +19,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import wheelofjeopardy.Database.Database;
 
@@ -42,19 +40,13 @@ public class UserInterface {
     private Button cat5Button;
     private Button cat6Button;
     private Button[][] squares;
-    private Display display;
     
-    public UserInterface(Database   db)
+    public UserInterface(Database db)
     {
-        
-        wheel = new Wheel(db.getCategories());
-        board = new GameBoard(db);
-        infoDisplay = new InformationDisplay();
-        
-        squares = new Button[5][6];
-        
-        display = new Display();
+       
+        Display display = new Display();
         Shell shell = new Shell(display);
+        shell.setMaximized(true);
         FillLayout fillLayout = new FillLayout();
         fillLayout.marginHeight = 5;
         fillLayout.marginWidth = 5;
@@ -76,7 +68,7 @@ public class UserInterface {
         fData.top = new FormAttachment( 0 );
         fData.left = new FormAttachment( 0 );
         fData.right = new FormAttachment( 50 ); // Locks on 10% of the view
-        fData.bottom = new FormAttachment( 50 );
+        fData.bottom = new FormAttachment( 18 );
         innerLeftTop.setLayoutData( fData );
         GridData gd = new GridData(SWT.FILL, SWT.FILL, true,true);
        
@@ -106,8 +98,8 @@ public class UserInterface {
         
         // SPIN WHEEL AREA
         Composite innerLeftBottom = new Composite( outer, SWT.BORDER );
-        innerLeftTop.setLayout( new GridLayout() );
-        innerLeftTop.setBackground( new Color( null, 232, 223, 255 ) ); // Blue
+        innerLeftBottom.setLayout( fillLayout );
+        innerLeftBottom.setBackground( new Color( null, 232, 223, 255 ) ); // Blue
         fData = new FormData();
         fData.top = new FormAttachment( innerLeftTop );
         fData.left = new FormAttachment( 0 );
@@ -117,18 +109,16 @@ public class UserInterface {
         
         // GAME BOARD VISUAL AREA
         Composite innerRight = new Composite( outer, SWT.BORDER );
-        FillLayout rowLayout = new FillLayout(SWT.HORIZONTAL);
-        //rowLayout.pack = true;
-        //rowLayout.justify = true;
-        innerRight.setLayout( rowLayout );
+        innerRight.setLayout( fillLayout );
         innerRight.setBackground( new Color( null, 255, 235, 223 ) ); // Orange
         fData = new FormData();
         fData.top = new FormAttachment( 0 );
         fData.left = new FormAttachment( innerLeftTop );
         fData.right = new FormAttachment( 100 );
         fData.bottom = new FormAttachment( 100 );
-        innerRight.setLayoutData( fData );       
-
+        innerRight.setLayoutData( fData );
+        
+        
         Composite category1Buttons = new Composite (innerRight, SWT.BORDER);
         category1Buttons.setLayout(new FillLayout(SWT.VERTICAL));
         cat1Button = new Button(category1Buttons, SWT.None);
@@ -226,6 +216,12 @@ public class UserInterface {
         Button cat6500 = new Button(category6Buttons, SWT.None);
         cat6500.setText("500");
         
+        wheel = new Wheel(db.getCategories(), innerLeftBottom, SWT.NONE);
+        board = new GameBoard(db);
+        infoDisplay = new InformationDisplay();
+        
+        setListeners();
+        
         shell.open();
         while (!shell.isDisposed()) {
             if (!display.readAndDispatch()) {
@@ -234,11 +230,11 @@ public class UserInterface {
         }
         
         display.dispose();
-      
     }
-
-    public Sector.SectorType retrieveCurrentSector()
-    {        
+    
+    public Sector.SectorType spinWheel()
+    {
+        wheel.spin();
         return wheel.getCurrentSector().getType();
     }
     
@@ -247,19 +243,15 @@ public class UserInterface {
         return wheel.getCurrSectorName();
     }
     
-//    public String getCurrentCategory()
-//    {
-//        
-//    }
-    
     private void setListeners() {
         Listener listener = new Listener() {
             @Override
             public void handleEvent(Event event) {
                 if (event.widget == submitBtn) {
                     
-                } else if (event.widget == spinBtn) {;
+                } else if (event.widget == spinBtn) {
                     wheel.spin();
+                    System.out.println(wheel.getCurrSectorName());
                 } else if (event.widget == cat1Button){
                     
                 } else if (event.widget == cat2Button) {
@@ -274,7 +266,7 @@ public class UserInterface {
                     
                 }
             }
-            
         };
+        spinBtn.addListener(SWT.Selection,listener);
     }
 }

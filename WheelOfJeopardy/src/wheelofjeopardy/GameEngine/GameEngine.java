@@ -147,7 +147,7 @@ public class GameEngine
         {
             // player whose turn it is spins the wheel
             // This function should prompt the user to click Spin button
-            Sector.SectorType sector = userInterface.retrieveCurrentSector();
+            Sector.SectorType sector = userInterface.spinWheel();
             statTracker.incrementSpins();
             performSectorOperation(sector);
             
