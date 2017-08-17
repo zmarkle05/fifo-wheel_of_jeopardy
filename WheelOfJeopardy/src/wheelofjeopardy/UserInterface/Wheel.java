@@ -31,10 +31,11 @@ public class Wheel
     private static Display display;
     private static ImageLoader loader;
     private static GC gc;
-    public Wheel(String [] catNames, Composite composite, int style) 
+    private UserInterface ui;
+    public Wheel(UserInterface ui, String [] catNames, Composite composite, int style) 
     {
         spinning = false;
-        
+        this.ui = ui;
         //create sectors in order of wheel picture.
         gameSectors.add(new Sector(Sector.SectorType.CATEGORY, catNames[0]));
         gameSectors.add(new Sector(Sector.SectorType.CATEGORY, catNames[2]));
@@ -120,6 +121,12 @@ public class Wheel
                         }
                     });
                 }
+                
+                display.asyncExec(new Runnable() {
+                        public void run() {
+                           ui.updateQuestion(ui.getDb().getQuestion(getCurrentSector().getName()));
+                        }
+                    });
                 spinning = false;
             }
         };

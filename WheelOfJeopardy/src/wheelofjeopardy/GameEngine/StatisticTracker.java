@@ -94,7 +94,7 @@ public class StatisticTracker
        return currentRound;
    }
    
-   public static void reset()
+   public void reset()
    {
        
    }

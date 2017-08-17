@@ -18,10 +18,11 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import wheelofjeopardy.Database.Database;
+import wheelofjeopardy.Database.Question;
+import wheelofjeopardy.GameEngine.GameEngine;
 
 /**
  *
@@ -34,13 +35,17 @@ public class UserInterface {
     private static InformationDisplay infoDisplay;
     private Button submitBtn;
     private Button spinBtn;
-    private String answer;
+    private GameEngine gameEngine;
+    private Text questionText;
     private Text answerText;
-    
+    private Display display;
+    private Database database;
     public UserInterface(Database db)
     {
-       
-        Display display = new Display();
+        gameEngine = new GameEngine(db, this);
+        
+       database = db;
+        display = new Display();
         Shell shell = new Shell(display);
         shell.setMaximized(true);
         FillLayout fillLayout = new FillLayout();
@@ -72,7 +77,7 @@ public class UserInterface {
         questionLabel.setText("Question:");
         questionLabel.setLayoutData(gd);
         questionLabel.setAlignment(SWT.CENTER);
-        Text questionText = new Text(innerLeftTop, SWT.NONE);
+        questionText = new Text(innerLeftTop, SWT.NONE);
         questionText.setEnabled(false);
         questionText.setLayoutData(gd);
         
@@ -114,21 +119,22 @@ public class UserInterface {
         fData.bottom = new FormAttachment( 100 );
         innerRight.setLayoutData( fData );
         
-        wheel = new Wheel(db.getCategories(), innerLeftBottom, SWT.NONE);
+        wheel = new Wheel(this, db.getCategories(), innerLeftBottom, SWT.NONE);
         board = new GameBoard(db, innerRight, 1);
-        infoDisplay = new InformationDisplay();
-        
-
+        infoDisplay = new InformationDisplay();       
         
         setListeners();
         
         shell.open();
         
-        MessageBox dialog = new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK);
-        dialog.setText("Player 1's Turn");
-        dialog.setMessage("Player 1 Spin the Wheel");
-        dialog.open();
+//        MessageBox dialog = new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK);
+//        dialog.setText("Player 1's Turn");
+//        dialog.setMessage("Player 1 Spin the Wheel");
+//        dialog.open();
         
+        setListeners();
+        
+        shell.open();
         while (!shell.isDisposed()) {
             if (!display.readAndDispatch()) {
                 display.sleep();
@@ -140,6 +146,7 @@ public class UserInterface {
     
     public Sector.SectorType spinWheel()
     {
+        wheel.spin();
         return wheel.getCurrentSector().getType();
     }
     
@@ -148,24 +155,30 @@ public class UserInterface {
         return wheel.getCurrSectorName();
     }
     
-    public void displayRound2(Database db)
-    {
-    //    board = new GameBoard(db, innerRight, 2);
-    }
-    
     private void setListeners() {
         Listener listener = new Listener() {
             @Override
             public void handleEvent(Event event) {
                 if (event.widget == submitBtn) {
-                    answer = answerText.getText();
+                    gameEngine.compareAnswer(answerText.getText(), questionText.getText());
                 } else if (event.widget == spinBtn) {
                     wheel.spin();
-                    System.out.println(wheel.getCurrSectorName());
+                    gameEngine.playGame(wheel.getCurrentSector());                   
                 }
             }
         };
         spinBtn.addListener(SWT.Selection,listener);
         submitBtn.addListener(SWT.Selection, listener);
     }
+    
+    public void updateQuestion(Question question) {
+        gameEngine.setCurrentQuestion(question);
+        questionText.setText(question.getQuestion()); 
+    }
+    
+    public Database getDb(){
+        return database;
+    }
+    
+    
 }
