@@ -3,6 +3,8 @@
  */
 package wheelofjeopardy.Database;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.*;
 
 import wheelofjeopardy.Database.Category;
@@ -84,18 +86,54 @@ public class Database
     public void readCSV(String csvPath)
     {
         //TODO populate 6 category objects from CSV
-        // For round 1
-        category1 = new Category("BLANK");
-        category2 = new Category("BLANK");
-        category3 = new Category("BLANK");
-        category4 = new Category("BLANK");
-        category5 = new Category("BLANK");
-        category6 = new Category("BLANK");
-        
+        try {
+            BufferedReader br = null;
+            br = new BufferedReader(new FileReader(csvPath));
+            String line = "";
+            String delimiter = ",";
+            
+            line = br.readLine();
+            String[] categories = line.split(delimiter);
+            
+            category1 = new Category(categories[0]);
+            category2 = new Category(categories[1]);
+            category3 = new Category(categories[2]);
+            category4 = new Category(categories[3]);
+            category5 = new Category(categories[4]);
+            category6 = new Category(categories[5]);
+            while ((line = br.readLine()) != null) {
+                String[] questionAnswer = line.split(delimiter);
+                for (int i = 0; i < questionAnswer.length; i++) {
+                    String[] qa = questionAnswer[i].split(";");
+                    if (i == 0) {
+                        category1.addQuestion(qa[0], qa[1]);
+                    } else if (i == 1) {
+                        category2.addQuestion(qa[0], qa[1]);
+                    } else if (i == 2) {
+                        category3.addQuestion(qa[0], qa[1]);
+                    } else if (i == 3) {
+                        category4.addQuestion(qa[0], qa[1]);
+                    } else if (i == 4) {
+                        category5.addQuestion(qa[0], qa[1]);
+                    } else {
+                        category6.addQuestion(qa[0], qa[1]);
+                    }
+                }
+            }
+           
+        } catch (Exception e ) {
+            e.printStackTrace();
+        }
     }
     
     public void writeCSV()
     {
         //TODO if time for additional functionality
+    }
+    
+    public Database getDatabase() {
+        
+        
+        return this;
     }
 }
