@@ -19,8 +19,10 @@ public class GameEngine
     private static Player player2;
     private static Player currPlayer;
     public  static StatisticTracker statTracker;
-    public  UserInterface userInterface;  
-    public  Database database;
+    
+   // public  Controller controller;
+    public  UserInterface userInterface;
+    public  Database      database;
     
     public GameEngine()
     {
@@ -36,14 +38,12 @@ public class GameEngine
         userInterface = new UserInterface(database);
     }
 
-    public void compareAnswer(String category)
+    public void compareAnswer(String category, String userAnswer)
     {
         Question question = database.getQuestion(category);
         
         if (question != null)
         {
-            //TODO pass question to GUI for user to answer
-            String userAnswer = "";
                 
             String correctAnswer = question.getAnswer();
         
@@ -97,7 +97,7 @@ public class GameEngine
         }
     }
     
-    public static void endGame()
+    public void endGame()
     {
         int player1Score = statTracker.getPlayerScore(1);
         int player2Score = statTracker.getPlayerScore(2);
@@ -147,7 +147,7 @@ public class GameEngine
         {
             // player whose turn it is spins the wheel
             // This function should prompt the user to click Spin button
-            Sector.SectorType sector = userInterface.spinWheel();
+            Sector.SectorType sector = userInterface.retrieveCurrentSector();
             statTracker.incrementSpins();
             performSectorOperation(sector);
             
@@ -160,6 +160,7 @@ public class GameEngine
     
     public void performSectorOperation(Sector.SectorType sector)
     {
+        System.out.println("Sector: " + sector.toString());
         switch(sector)
         {
             case LOSE_TURN:
@@ -179,8 +180,9 @@ public class GameEngine
                 // allow other play to choose a category
                 // TODO send message to GUI notifying opponent player to choose
                 System.out.println("Opponent Player Choose Category");
-                String category = "";
-                compareAnswer(category);
+                String category   = ""; //userInterface.getCategory();
+                String userAnswer = ""; //userInterface.getUserAnswer();
+                compareAnswer(category, userAnswer );
                 break;
             }
             case FREE_TURN:
@@ -198,7 +200,7 @@ public class GameEngine
                   // player can choose any category
                 // TODO send message to GUI notifying player to choose
                 String category = "";
-                compareAnswer(category);
+               // compareAnswer(category);
                 break;
             }
             case CATEGORY:
@@ -207,7 +209,7 @@ public class GameEngine
                 // to the player
                 //grab category name
                 String sectorName = userInterface.retrieveSectorName();
-                compareAnswer(sectorName);
+              // compareAnswer(sectorName);
                 break;
             }
             default:

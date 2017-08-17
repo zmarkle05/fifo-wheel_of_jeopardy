@@ -3,7 +3,10 @@
  */
 package wheelofjeopardy.UserInterface;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 /**
  *
  * @author adam
@@ -48,6 +51,9 @@ public class Wheel
     
     public void spin()
     {
+        Random randomGenerator = new Random();
+        int index = randomGenerator.nextInt(gameSectors.size());
+        currentSector = index;
         // todo and animate the spinning
         
     }
