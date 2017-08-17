@@ -21,6 +21,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import wheelofjeopardy.Database.Database;
+import wheelofjeopardy.Database.Question;
 import wheelofjeopardy.GameEngine.GameEngine;
 
 /**
@@ -161,8 +162,9 @@ public class UserInterface {
         submitBtn.addListener(SWT.Selection, listener);
     }
     
-    public void updateQuestion(String question) {
-        questionText.setText(question); 
+    public void updateQuestion(Question question) {
+        gameEngine.setCurrentQuestion(question);
+        questionText.setText(question.getQuestion()); 
     }
     
     public Database getDb(){

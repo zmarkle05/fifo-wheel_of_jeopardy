@@ -124,7 +124,7 @@ public class Wheel
                 
                 display.asyncExec(new Runnable() {
                         public void run() {
-                           ui.updateQuestion(ui.getDb().getQuestion(getCurrentSector().getName()).getQuestion());
+                           ui.updateQuestion(ui.getDb().getQuestion(getCurrentSector().getName()));
                         }
                     });
                 spinning = false;

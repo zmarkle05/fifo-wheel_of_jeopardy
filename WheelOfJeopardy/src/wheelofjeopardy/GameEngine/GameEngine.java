@@ -243,4 +243,7 @@ public class GameEngine
         endTurn();
     }
 
+    public void setCurrentQuestion(Question q) {
+        curQuestion = q;
+    }
 }
