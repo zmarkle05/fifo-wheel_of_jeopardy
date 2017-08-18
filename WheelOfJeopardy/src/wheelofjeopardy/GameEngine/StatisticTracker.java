@@ -50,7 +50,7 @@ public class StatisticTracker
        }
        else
        {
-           player2Score++;
+           player2Score--;
        }
        
    }
@@ -99,5 +99,4 @@ public class StatisticTracker
        
    }
 }
-
 

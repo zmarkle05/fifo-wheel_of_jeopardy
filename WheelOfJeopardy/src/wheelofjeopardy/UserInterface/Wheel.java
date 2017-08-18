@@ -4,6 +4,8 @@
 package wheelofjeopardy.UserInterface;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -15,13 +17,13 @@ import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import wheelofjeopardy.UserInterface.Sector.SectorType;
 /**
  *
  * @author adam
  */
 public class Wheel 
 {
-    
     private int currentSector;
     List<Sector> gameSectors = new ArrayList<>();
     private Image image;
@@ -32,6 +34,8 @@ public class Wheel
     private static ImageLoader loader;
     private static GC gc;
     private UserInterface ui;
+    
+    
     public Wheel(UserInterface ui, String [] catNames, Composite composite, int style) 
     {
         spinning = false;
@@ -98,6 +102,8 @@ public class Wheel
         if (currentSector > 23) {
             currentSector = currentSector - 24;
         }
+        ui.enableSpin(false);
+        ui.enableSubmit(false);
         Thread thread = new Thread() {
             public void run() {
                 spinning = true;
@@ -125,6 +131,30 @@ public class Wheel
                 display.asyncExec(new Runnable() {
                         public void run() {
                            ui.updateQuestion(ui.getDb().getQuestion(getCurrentSector().getName()));
+                           if (getCurrentSector().getType() == SectorType.LOSE_TURN) {
+                                ui.enableSubmit(false);
+                                ui.enableSpin(true);
+                           } else if (getCurrentSector().getType() == SectorType.BANKRUPT) {
+                                ui.enableSubmit(false);
+                                ui.enableSpin(true);
+                           } else if (getCurrentSector().getType() == SectorType.FREE_TURN) {
+                                ui.enableSubmit(false);  
+                                ui.enableSpin(true);
+                           } else if (getCurrentSector().getType() == SectorType.OPP_CHOICE) {
+                                ui.enableSubmit(true);
+                                ui.enableSpin(false);
+                           } else if (getCurrentSector().getType() == SectorType.PLAYER_CHOICE) {
+                                ui.enableSubmit(true);
+                                ui.enableSpin(false);
+                           } else if (getCurrentSector().getType() == SectorType.SPIN_AGAIN) {
+                                ui.enableSubmit(false);
+                                ui.enableSpin(true);
+                           } else {
+                                ui.enableSubmit(true);
+                                ui.enableSpin(false);
+                           }
+                           ui.startTimer();
+                           
                         }
                     });
                 spinning = false;

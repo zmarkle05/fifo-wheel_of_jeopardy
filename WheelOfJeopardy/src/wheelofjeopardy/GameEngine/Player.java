@@ -11,7 +11,7 @@ package wheelofjeopardy.GameEngine;
  */
 public class Player 
 {
-    private static String  name;
+    private String  name;
     private boolean isTurn;
     private int     numFreeTokens;
     
@@ -79,5 +79,5 @@ public class Player
     {
         return name;
     }
-    
 }
+
