@@ -4,6 +4,8 @@
 package wheelofjeopardy.UserInterface;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
@@ -40,11 +42,12 @@ public class UserInterface {
     private Text answerText;
     private Display display;
     private Database database;
+    private int time;
     public UserInterface(Database db)
     {
         gameEngine = new GameEngine(db, this);
         
-       database = db;
+        database = db;
         display = new Display();
         Shell shell = new Shell(display);
         shell.setMaximized(true);
@@ -61,17 +64,28 @@ public class UserInterface {
         formLayout.marginWidth = 5;
         formLayout.spacing = 5;
         outer.setLayout( formLayout );
+        
+        Composite topInfoBanner = new Composite( outer, SWT.BORDER );
+        topInfoBanner.setLayout( new GridLayout(4, false) );
+        topInfoBanner.setBackground( new Color( null, 232, 223, 255 ) ); // Blue
+        FormData fData = new FormData();
+        fData.top = new FormAttachment( 0 );
+        fData.left = new FormAttachment( 0 );
+        fData.right = new FormAttachment( 100 ); // Locks on 10% of the view
+        fData.bottom = new FormAttachment( 5 );
+        topInfoBanner.setLayoutData( fData );
+        GridData gd = new GridData(SWT.FILL, SWT.FILL, true,true);
+        
         // CONTROLS 
         Composite innerLeftTop = new Composite( outer, SWT.BORDER );
         innerLeftTop.setLayout( new GridLayout(2, false) );
         innerLeftTop.setBackground( new Color( null, 232, 223, 255 ) ); // Blue
-        FormData fData = new FormData();
-        fData.top = new FormAttachment( 0 );
+        fData = new FormData();
+        fData.top = new FormAttachment( topInfoBanner );
         fData.left = new FormAttachment( 0 );
         fData.right = new FormAttachment( 50 ); // Locks on 10% of the view
         fData.bottom = new FormAttachment( 18 );
         innerLeftTop.setLayoutData( fData );
-        GridData gd = new GridData(SWT.FILL, SWT.FILL, true,true);
        
         Label questionLabel = new Label(innerLeftTop, SWT.NONE);
         questionLabel.setText("Question:");
@@ -93,6 +107,8 @@ public class UserInterface {
         submitBtn = new Button(innerLeftTop, SWT.NONE);
         submitBtn.setText("SUBMIT");
         submitBtn.setLayoutData(gd);
+        submitBtn.setEnabled(false);
+        
         spinBtn = new Button(innerLeftTop, SWT.NONE);
         spinBtn.setText("SPIN");
         spinBtn.setLayoutData(gd);
@@ -113,7 +129,7 @@ public class UserInterface {
         innerRight.setLayout( fillLayout );
         innerRight.setBackground( new Color( null, 255, 235, 223 ) ); // Orange
         fData = new FormData();
-        fData.top = new FormAttachment( 0 );
+        fData.top = new FormAttachment( topInfoBanner );
         fData.left = new FormAttachment( innerLeftTop );
         fData.right = new FormAttachment( 100 );
         fData.bottom = new FormAttachment( 100 );
@@ -121,8 +137,10 @@ public class UserInterface {
         
         wheel = new Wheel(this,db.getCategories(), innerLeftBottom, SWT.NONE);
         board = new GameBoard(db);
-        infoDisplay = new InformationDisplay();
-        
+        infoDisplay = new InformationDisplay(this, topInfoBanner, SWT.NONE);
+        infoDisplay.updateInfoWithTurn(gameEngine.getCurPlayer().getName(),
+            gameEngine.getStats().player1Score, gameEngine.getStats().player2Score, 
+            gameEngine.getPlayer1().getFreeTokens(),gameEngine.getPlayer2().getFreeTokens());
         setListeners();
         
         shell.open();
@@ -133,6 +151,12 @@ public class UserInterface {
         }
         
         display.dispose();
+    }
+    
+    public void updateInfo() {
+        infoDisplay.updateInfoWithTurn(gameEngine.getCurPlayer().getName(),
+            gameEngine.getStats().player1Score, gameEngine.getStats().player2Score, 
+            gameEngine.getPlayer1().getFreeTokens(),gameEngine.getPlayer2().getFreeTokens());
     }
     
     public Sector.SectorType spinWheel()
@@ -151,7 +175,13 @@ public class UserInterface {
             @Override
             public void handleEvent(Event event) {
                 if (event.widget == submitBtn) {
+                    
                     gameEngine.compareAnswer(answerText.getText());
+                    infoDisplay.updateInfoWithTurn(gameEngine.getCurPlayer().getName(),
+                        gameEngine.getStats().player1Score, gameEngine.getStats().player2Score, 
+                        gameEngine.getPlayer1().getFreeTokens(),gameEngine.getPlayer2().getFreeTokens());
+                    enableSpin(true);
+                    enableSubmit(false);
                 } else if (event.widget == spinBtn) {
                     wheel.spin();
                     gameEngine.playGame(wheel.getCurrentSector());                   
@@ -164,12 +194,51 @@ public class UserInterface {
     
     public void updateQuestion(Question question) {
         gameEngine.setCurrentQuestion(question);
-        questionText.setText(question.getQuestion()); 
+        if (question != null) 
+         questionText.setText(question.getQuestion());
+    }
+    
+    public void startTimer() {
+        time = 51; 
+        Thread updateTimerThread = new Thread() {
+                               
+            public void run() {
+
+                while (time > 0) {
+                    try {
+                        display.asyncExec(new Runnable() {
+                            public void run() {
+                                 infoDisplay.updateTimer(time);
+                            }
+                        });
+                        if (!wheel.isSpinning()) {
+                            time--;
+                        } else {
+                            Thread.currentThread().join();
+                        }
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Wheel.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (Throwable ex) {
+                        Logger.getLogger(UserInterface.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }   
+        };
+        updateTimerThread.start();
+       
     }
     
     public Database getDb(){
         return database;
     }
     
+    public void enableSpin(boolean enabled) {
+        spinBtn.setEnabled(enabled);
+    }
+    
+    public void enableSubmit(boolean enabled) {
+        submitBtn.setEnabled(enabled);
+    }
     
 }

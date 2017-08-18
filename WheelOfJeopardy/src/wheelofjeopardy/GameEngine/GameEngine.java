@@ -15,9 +15,8 @@ public class GameEngine
 {
         
     public static int questionsLeft;
-    private Player player1;
-    private Player player2;
-    private Player currPlayer;
+    public Player player1;
+    public Player player2;
     private Question curQuestion;
     public  StatisticTracker statTracker;
     private final Database database;
@@ -25,11 +24,11 @@ public class GameEngine
     
     public GameEngine(Database database, UserInterface ui)
     {
-        player1 = new Player("Player 1", true);
-        System.out.println(player1.getName());
+        player1 = new Player("Player 1", false);
+        
 
-        player2 = new Player("Player 2", false);
-        System.out.println(player1.getName());
+        player2 = new Player("Player 2", true);
+        
         
         statTracker = new StatisticTracker();
         this.database = database;
@@ -44,7 +43,7 @@ public class GameEngine
             String userAnswer = answer;
                 
             String correctAnswer = curQuestion.getAnswer();
-        
+            
             int pointValue = curQuestion.getPointValue();
                 
             boolean isCorrect = userAnswer.toLowerCase().equals(correctAnswer.toLowerCase());
@@ -64,23 +63,39 @@ public class GameEngine
            
                 endTurn();
             }
-            else if (currPlayer.getFreeTokens() > 0 && 
+            else if (player1.isTurn() && player1.getFreeTokens() > 0 && 
                      statTracker.getNumberOfSpins() != 50)
             {
                 // TODO prompt user if they would like to use a token
                 if (true) //player selected to use token
                 {
-                    //currPlayer.useToken();
+                    endTurn();
                 }
                 else
                 {
                     endTurn();
                 }
             }
+            else if (player2.isTurn() && player2.getFreeTokens() > 0 && 
+                     statTracker.getNumberOfSpins() != 50)
+            {
+                // TODO prompt user if they would like to use a token
+                if (true) //player selected to use token
+                {
+                     endTurn();
+                }
+                else
+                {
+                    endTurn();
+                }
+            } 
+            else {
+                endTurn();
+            }
         }
         else
         {
-            // how should we handle categories that run out of questions?
+            endTurn();// how should we handle categories that run out of questions?
         }
     }
 
@@ -107,21 +122,24 @@ public class GameEngine
     
     public void endTurn()
     {
-        
         //TODO notify GUI of change of turns
         if (player1.isTurn())
         {
+           System.out.println("player1 end turn");
+
             player1.setTurn(false);
             player2.setTurn(true);
         }
         else if (player2.isTurn())
         {
-            player1.setTurn(true);
+            System.out.println("player2 end turn");
             player2.setTurn(false);
+            player1.setTurn(true);
+            
         }
         else
         {
-            //shouldn't happen
+            System.out.println("maybe?");
         }
     }
     
@@ -154,13 +172,13 @@ public class GameEngine
             {
                 // Set opposite player's turn to true but give player option to use
                 // free token if they have any first
-               // loseTurn();
+                loseTurn();
                 break;
             }
             case BANKRUPT:
-            {
-               //  bankrupt();
-                 break;
+            {  
+                bankrupt();
+                break;
             }
             case OPP_CHOICE:
             {
@@ -178,24 +196,27 @@ public class GameEngine
                 } else {
                     player2.incrementTokens();
                 }
+
                 break;
             }
             case SPIN_AGAIN:
             {
                  // player should be promted to spin again from GUI
+
                 break;
             }
             case PLAYER_CHOICE:
             {
-                  // player can choose any category
+                 // player can choose any category
                 // TODO send message to GUI notifying player to choose
                 String category = "";
+
                // compareAnswer(category);
                 break;
             }
             case CATEGORY:
-            {
-               
+            {     
+                
                 break;
             }
             default:
@@ -203,18 +224,19 @@ public class GameEngine
                 //INVALID
             }
         }
+        ui.updateInfo();
     }
     
 
     public void loseTurn()
     {
-        if (currPlayer.getFreeTokens() > 0 && 
+        if (getCurPlayer().getFreeTokens() > 0 && 
             statTracker.getNumberOfSpins() != 50)
         {
             // TODO prompt user if they would like to use a token
             if (true) //player selected to use token
             {
-                currPlayer.useToken();
+                getCurPlayer().useToken();
             }
             else
             {
@@ -229,12 +251,12 @@ public class GameEngine
     
     public void bankrupt()
     {
-        if (currPlayer.getName().equals("Player 1"))
+        if (getCurPlayer().getName().equals("Player 1"))
         {
             statTracker.player1Score = 0;
             // TODO DISPLAY TO GUI
         }
-        else if (currPlayer.getName().equals("Player 2"))
+        else if (getCurPlayer().getName().equals("Player 2"))
         {
             statTracker.player2Score = 0; 
             // TODO DISPLAY TO GUI
@@ -245,5 +267,30 @@ public class GameEngine
 
     public void setCurrentQuestion(Question q) {
         curQuestion = q;
+    }
+    
+    public Player getCurPlayer() {
+       
+        if (player1.isTurn()) {
+             System.out.println("cur - " + player1.getName());
+            return player1;
+        } else if (player2.isTurn()) {
+            System.out.println("cur - " + player2.getName());
+
+            return player2;
+        }
+        return null;
+    }
+    
+    public Player getPlayer1() {
+        return player1;
+    }
+    
+    public Player getPlayer2() {
+        return player2;
+    }
+    
+    public StatisticTracker getStats() {
+        return statTracker;
     }
 }
