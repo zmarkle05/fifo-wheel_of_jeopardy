@@ -150,7 +150,7 @@ public class UserInterface {
             }
         }
         
-        display.dispose();
+        
     }
     
     public void updateInfo() {
@@ -195,7 +195,7 @@ public class UserInterface {
     public void updateQuestion(Question question) {
         gameEngine.setCurrentQuestion(question);
         if (question != null) 
-         questionText.setText(question.getQuestion());
+            questionText.setText(question.getQuestion());
     }
     
     public void startTimer() {
