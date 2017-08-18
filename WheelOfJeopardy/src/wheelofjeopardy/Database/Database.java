@@ -5,9 +5,8 @@ package wheelofjeopardy.Database;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.*;
+import java.util.HashMap;
 
-import wheelofjeopardy.Database.Category;
 
 /**
  *
@@ -23,8 +22,13 @@ public class Database
     private Category category5;
     private Category category6;
     
+//    private HashMap<Integer, Question> round1Questions; 
+//    private HashMap<Integer, Question> round2Questions;
+    
     public Database(String csv)
     {
+//        round1Questions = new HashMap<Integer, Question>();
+//        round2Questions = new HashMap<Integer, Question>();
         readCSV(csv);
     }
     
@@ -68,6 +72,7 @@ public class Database
         
         return question;
     } 
+    
     public String[] getCategories()
     {
         String[] catNames = new String[6];
@@ -101,6 +106,7 @@ public class Database
             category4 = new Category(categories[3]);
             category5 = new Category(categories[4]);
             category6 = new Category(categories[5]);
+
             while ((line = br.readLine()) != null) {
                 String[] questionAnswer = line.split(delimiter);
                 for (int i = 0; i < questionAnswer.length; i++) {
@@ -135,5 +141,32 @@ public class Database
         
         
         return this;
+    }
+    
+    public Category getCategory(int catNum) {
+        if (catNum == 1)
+        {
+            return category1;
+        } 
+        else if (catNum == 2)
+        {
+            return category2;
+        }
+        else if (catNum == 3)
+        {
+            return category3;
+        }
+        else if (catNum == 4)
+        {
+            return category4;
+        }
+        else if (catNum == 5)
+        {
+            return category5;
+        }
+        else
+        {
+            return category6;
+        }
     }
 }

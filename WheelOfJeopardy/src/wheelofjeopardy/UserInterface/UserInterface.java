@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import wheelofjeopardy.Database.Database;
@@ -136,7 +137,7 @@ public class UserInterface {
         innerRight.setLayoutData( fData );
         
         wheel = new Wheel(this,db.getCategories(), innerLeftBottom, SWT.NONE);
-        board = new GameBoard(db);
+        board = new GameBoard(db,innerRight, 1);
         infoDisplay = new InformationDisplay(this, topInfoBanner, SWT.NONE);
         infoDisplay.updateInfoWithTurn(gameEngine.getCurPlayer().getName(),
             gameEngine.getStats().player1Score, gameEngine.getStats().player2Score, 
@@ -196,6 +197,7 @@ public class UserInterface {
         gameEngine.setCurrentQuestion(question);
         if (question != null) 
             questionText.setText(question.getQuestion());
+        board.hideSquare(question.getQuestion());
     }
     
     public void startTimer() {
@@ -240,5 +242,34 @@ public class UserInterface {
     public void enableSubmit(boolean enabled) {
         submitBtn.setEnabled(enabled);
     }
-    
+     public void useFreeTokens()
+    {
+        int numOfTokens = gameEngine.getCurPlayer().getFreeTokens();
+        
+        if (numOfTokens > 0 && gameEngine.getNumberOfSpins() < 50)
+        {
+            MessageBox useToken = new MessageBox(display.getActiveShell(), SWT.ICON_QUESTION | SWT.OK | SWT.NO);
+            useToken.setText("Free Token");
+            useToken.setMessage(gameEngine.getCurPlayer().getName() + 
+                    " Would you like to use a free token and spin again?");
+            
+            int playerChoice = useToken.open();
+            
+            switch (playerChoice)
+            {
+                case SWT.YES:
+                {
+                    gameEngine.playerUseToken(true);
+                    break;
+                }
+                case SWT.NO:
+                {
+                    gameEngine.endTurn();
+                    break;
+                }
+            }
+            
+        }
+    }
 }
+

@@ -1,6 +1,3 @@
-/*
- *
- */
 package wheelofjeopardy.GameEngine;
 
 import wheelofjeopardy.UserInterface.*;
@@ -293,4 +290,23 @@ public class GameEngine
     public StatisticTracker getStats() {
         return statTracker;
     }
+    
+    public int getNumberOfSpins()
+    {
+        return statTracker.getNumberOfSpins();
+    }
+       
+    public void playerUseToken(boolean useToken)
+    {
+        if (useToken)
+        {
+            getCurPlayer().useToken();
+        }
+        else
+        {
+            endTurn();
+        }
+        
+    }
 }
+
