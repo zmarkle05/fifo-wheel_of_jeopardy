@@ -21,10 +21,10 @@ public class GameEngine
     
     public GameEngine(Database database, UserInterface ui)
     {
-        player1 = new Player("Player 1", false);
+        player1 = new Player("Player 1", true);
         
 
-        player2 = new Player("Player 2", true);
+        player2 = new Player("Player 2", false);
         
         
         statTracker = new StatisticTracker();
@@ -40,7 +40,7 @@ public class GameEngine
             String userAnswer = answer;
                 
             String correctAnswer = curQuestion.getAnswer();
-            
+            System.out.println("CORRECT ANSWER: " + correctAnswer);
             int pointValue = curQuestion.getPointValue();
                 
             boolean isCorrect = userAnswer.toLowerCase().equals(correctAnswer.toLowerCase());

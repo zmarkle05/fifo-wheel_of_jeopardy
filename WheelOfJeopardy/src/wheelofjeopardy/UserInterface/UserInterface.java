@@ -150,8 +150,7 @@ public class UserInterface {
                 display.sleep();
             }
         }
-        
-        
+      
     }
     
     public void updateInfo() {
