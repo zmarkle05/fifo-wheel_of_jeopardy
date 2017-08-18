@@ -10,6 +10,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import wheelofjeopardy.Database.Database;
+import wheelofjeopardy.Database.Question;
+
+import java.util.*;
 
 /**
  *
@@ -18,13 +21,15 @@ import wheelofjeopardy.Database.Database;
 public class GameBoard {
 
     private Button[] catButtons;
+    private HashMap<String,Squares> gameSquares;
     
     public GameBoard(Database db,
                      Composite composite,
                      int roundNum)
     {
         String[] categories = db.getCategories();
-        catButtons = new Button[6];
+        catButtons  = new Button[6];
+        gameSquares = new HashMap<String,Squares>(); 
         for (int iter = 0; iter < categories.length; iter++)
         {
             Composite categoryButtons = new Composite (composite, SWT.BORDER);
@@ -33,13 +38,15 @@ public class GameBoard {
             catButtons[iter].setText(categories[iter]);
             catButtons[iter].setEnabled(false);
             
-            for (int iter2 = 0; iter2 < 5; iter2++)
+            Queue<Question> questions = db.getCategory(iter + 1).retrieveQuestions();
+            for (Question quest: questions)
             {
-                String label = Integer.toString(((iter2 + 1) * 100) * roundNum);
-                Squares square = new Squares(categoryButtons, label);
-            }
-            
-            
+                String label = Integer.toString((quest.getPointValue()) * roundNum);
+                
+                String questText = quest.getQuestion();
+                
+                gameSquares.put(questText, new Squares(categoryButtons, label));
+            }             
         }
         
         setListeners();
@@ -53,6 +60,14 @@ public class GameBoard {
         catButtons[3].setEnabled(flag);
         catButtons[4].setEnabled(flag);
         catButtons[5].setEnabled(flag);
+    }
+    
+    public void hideSquare(String question)
+    {
+        if (!question.equals(""))
+        {
+            gameSquares.get(question).hide();
+        }
     }
     
     private void setListeners() {

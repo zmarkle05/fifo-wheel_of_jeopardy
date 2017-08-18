@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import wheelofjeopardy.Database.Database;
@@ -40,11 +41,12 @@ public class UserInterface {
     private Text answerText;
     private Display display;
     private Database database;
+    
     public UserInterface(Database db)
     {
         gameEngine = new GameEngine(db, this);
         
-       database = db;
+        database = db;
         display = new Display();
         Shell shell = new Shell(display);
         shell.setMaximized(true);
@@ -127,10 +129,10 @@ public class UserInterface {
         
         shell.open();
         
-//        MessageBox dialog = new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK);
-//        dialog.setText("Player 1's Turn");
-//        dialog.setMessage("Player 1 Spin the Wheel");
-//        dialog.open();
+        MessageBox dialog = new MessageBox(shell, SWT.ICON_INFORMATION | SWT.OK);
+        dialog.setText("Player 1's Turn");
+        dialog.setMessage("Player 1 Spin the Wheel");
+        dialog.open();
         
         setListeners();
         
@@ -155,12 +157,45 @@ public class UserInterface {
         return wheel.getCurrSectorName();
     }
     
+    public void useFreeTokens()
+    {
+        int numOfTokens = gameEngine.getCurrentPlayer().getFreeTokens();
+        
+        if (numOfTokens > 0 && gameEngine.getNumberOfSpins() < 50)
+        {
+            MessageBox useToken = new MessageBox(display.getActiveShell(), SWT.ICON_QUESTION | SWT.OK | SWT.NO);
+            useToken.setText("Free Token");
+            useToken.setMessage(gameEngine.getCurrentPlayer().getName() + 
+                    " Would you like to use a free token and spin again?");
+            
+            int playerChoice = useToken.open();
+            
+            switch (playerChoice)
+            {
+                case SWT.YES:
+                {
+                    gameEngine.playerUseToken(true);
+                    break;
+                }
+                case SWT.NO:
+                {
+                    gameEngine.endTurn();
+                    break;
+                }
+            }
+            
+        }
+    }
+    
     private void setListeners() {
         Listener listener = new Listener() {
             @Override
             public void handleEvent(Event event) {
                 if (event.widget == submitBtn) {
-                    gameEngine.compareAnswer(answerText.getText(), questionText.getText());
+                    if (!gameEngine.compareAnswer(answerText.getText()))
+                    {
+                        useFreeTokens();
+                    }
                 } else if (event.widget == spinBtn) {
                     wheel.spin();
                     gameEngine.playGame(wheel.getCurrentSector());                   
@@ -174,6 +209,7 @@ public class UserInterface {
     public void updateQuestion(Question question) {
         gameEngine.setCurrentQuestion(question);
         questionText.setText(question.getQuestion()); 
+        board.hideSquare(question.getQuestion());
     }
     
     public Database getDb(){

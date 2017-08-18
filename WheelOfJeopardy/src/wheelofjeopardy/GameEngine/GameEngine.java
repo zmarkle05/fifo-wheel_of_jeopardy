@@ -6,6 +6,7 @@ package wheelofjeopardy.GameEngine;
 import wheelofjeopardy.UserInterface.*;
 import wheelofjeopardy.Database.Database;
 import wheelofjeopardy.Database.Question;
+import wheelofjeopardy.Database.Category;
 
 /**
  *
@@ -17,7 +18,6 @@ public class GameEngine
     public static int questionsLeft;
     private Player player1;
     private Player player2;
-    private Player currPlayer;
     private Question curQuestion;
     public  StatisticTracker statTracker;
     private final Database database;
@@ -36,71 +36,61 @@ public class GameEngine
         this.ui = ui;
     }
 
-    public void compareAnswer(String userAnswer, String category)
-    {
-        //clean up
-        Question question = database.getQuestion(category);
-        
-        if (question != null)
-        {
-                
-            String correctAnswer = question.getAnswer();
-        
-            int pointValue = question.getPointValue();
-                
-            boolean isCorrect = userAnswer.toLowerCase().equals(correctAnswer.toLowerCase());
+    public boolean compareAnswer(String userAnswer)
+    {   
+        String correctAnswer = curQuestion.getAnswer();
        
-            if (isCorrect)
-            {
-                if (currPlayer.getName().equals("Player 1"))
-                {
-                    statTracker.player1Score = statTracker.player1Score  + pointValue;
-                }
-                else
-                {
-                    statTracker.player2Score = statTracker.player2Score  + pointValue;
-                }
-           
-                endTurn();
+        int pointValue = curQuestion.getPointValue();
+
+        boolean isCorrect = userAnswer.toLowerCase().equals(correctAnswer.toLowerCase());
+
+        if (isCorrect) {
+            if (getCurrentPlayer().getName().equals("Player 1")) {
+                statTracker.player1Score = statTracker.player1Score + pointValue;
+            } else {
+                statTracker.player2Score = statTracker.player2Score + pointValue;
             }
-            else if (currPlayer.getFreeTokens() > 0 && 
-                     statTracker.getNumberOfSpins() != 50)
-            {
-                // TODO prompt user if they would like to use a token
-                if (true) //player selected to use token
-                {
-                    currPlayer.useToken();
-                }
-                else
-                {
-                    endTurn();
-                }
-            }
+            endTurn();
+            
+            return true;
+        } 
+        
+        return false;
+    }
+    
+    public void playerUseToken(boolean useToken)
+    {
+        if (useToken)
+        {
+            getCurrentPlayer().useToken();
         }
+        else
+        {
+            endTurn();
+        }
+        
     }
 
-    public void endGame()
+    public String endGame()
     {
         int player1Score = statTracker.getPlayerScore(1);
         int player2Score = statTracker.getPlayerScore(2);
         if (player1Score > player2Score)
         {
-            // TODO inform GUI to display winner
+            return player1.getName();
         }
         else if (player2Score > player1Score)
         {
-            // TODO inform GUI to display winner
+            return player2.getName();
         }
         else
         {
-            // TODO inform GUI to display Tie
+            return "TIE";
         }
     }
     
     public void endTurn()
     {
-        
-        //TODO notify GUI of change of turns
         if (player1.isTurn())
         {
             player1.setTurn(false);
@@ -200,13 +190,13 @@ public class GameEngine
 
     public void loseTurn()
     {
-        if (currPlayer.getFreeTokens() > 0 && 
+        if (getCurrentPlayer().getFreeTokens() > 0 && 
             statTracker.getNumberOfSpins() != 50)
         {
             // TODO prompt user if they would like to use a token
             if (true) //player selected to use token
             {
-                currPlayer.useToken();
+                getCurrentPlayer().useToken();
             }
             else
             {
@@ -221,12 +211,12 @@ public class GameEngine
     
     public void bankrupt()
     {
-        if (currPlayer.getName().equals("Player 1"))
+        if (getCurrentPlayer().getName().equals("Player 1"))
         {
             statTracker.player1Score = 0;
             // TODO DISPLAY TO GUI
         }
-        else if (currPlayer.getName().equals("Player 2"))
+        else if (getCurrentPlayer().getName().equals("Player 2"))
         {
             statTracker.player2Score = 0; 
             // TODO DISPLAY TO GUI
@@ -237,5 +227,22 @@ public class GameEngine
 
     public void setCurrentQuestion(Question q) {
         curQuestion = q;
+    }
+    
+    public Player getCurrentPlayer()
+    {
+        if (player1.isTurn())
+        {
+            return player1;
+        }
+        else
+        {
+            return player2;
+        }
+    }
+    
+      public int getNumberOfSpins()
+    {
+        return statTracker.getNumberOfSpins();
     }
 }

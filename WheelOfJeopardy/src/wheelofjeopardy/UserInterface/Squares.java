@@ -12,12 +12,18 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class Squares {
 
+    private Button square;
     
     public Squares(Composite composite, 
                    String label){
         
-        Button square = new Button(composite, SWT.NONE);
+        square = new Button(composite, SWT.NONE);
         square.setText(label);   
         square.setEnabled(false);
+    }
+    
+    public void hide()
+    {
+        square.setVisible(false);
     }
 }
