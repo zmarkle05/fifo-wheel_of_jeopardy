@@ -298,6 +298,7 @@ public class UserInterface {
                     " select a category for yourself!");
         }
         int result = choiceBox.open();
+        submitBtn.setEnabled(true);
     }
     
     public void bankrupt() {
