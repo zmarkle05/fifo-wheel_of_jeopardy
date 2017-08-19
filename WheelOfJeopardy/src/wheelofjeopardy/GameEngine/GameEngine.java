@@ -24,10 +24,8 @@ public class GameEngine
     public GameEngine(Database database, UserInterface ui)
     {
         player1 = new Player("Player 1", true);
-        player1.incrementTokens();
 
         player2 = new Player("Player 2", false);
-        player2.incrementTokens();
 
         statTracker = new StatisticTracker();
         this.database = database;
