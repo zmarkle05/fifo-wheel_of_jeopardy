@@ -3,7 +3,9 @@
  */
 package wheelofjeopardy;
 
+import wheelofjeopardy.Database.Database;
 import wheelofjeopardy.GameEngine.GameEngine;
+import wheelofjeopardy.UserInterface.UserInterface;
 
 /**
  *
@@ -15,9 +17,9 @@ public class WheelOfJeopardy {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        GameEngine gameEngine = new GameEngine();
+        Database database = new Database("./database.csv");
         
-        gameEngine.playGame();
+        UserInterface userInterface = new UserInterface(database);
     }
     
 }

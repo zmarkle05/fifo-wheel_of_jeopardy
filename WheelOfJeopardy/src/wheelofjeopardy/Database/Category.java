@@ -18,6 +18,7 @@ public class Category
     public Category(String catName)
     {
         categoryName = catName;
+        
         catQuestions = new LinkedList<Question>();
     }
     
@@ -42,8 +43,21 @@ public class Category
         return catQuestions.poll();
     }
     
-    public Question retrieveQuestion()
+    public Queue<Question> retrieveQuestions()
     {
-        return catQuestions.peek();
+        return catQuestions;
+    }
+    
+    public String retrieveAnswer(String question)
+    {
+        for (Question quest: catQuestions)
+        {
+            if (question.equals(quest.getQuestion()))
+            {
+                return quest.getAnswer();
+            }
+        }
+        
+        return "";
     }
 }

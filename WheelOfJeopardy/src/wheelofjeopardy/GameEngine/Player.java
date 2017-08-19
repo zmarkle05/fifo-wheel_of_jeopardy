@@ -11,7 +11,7 @@ package wheelofjeopardy.GameEngine;
  */
 public class Player 
 {
-    private static String  name;
+    private String  name;
     private boolean isTurn;
     private int     numFreeTokens;
     
@@ -22,9 +22,9 @@ public class Player
         this.numFreeTokens = 0;
     }
     
-    public static boolean isTurn()
+    public boolean isTurn()
     {
-        return false;
+        return isTurn;
     }
     
     public boolean useToken()
@@ -40,17 +40,17 @@ public class Player
         }
     }
     
-    public static void spinWheel()
+    public void spinWheel()
     {
         
     }
     
-    public static void answerQuestion()
+    public void answerQuestion()
     {
         
     }
     
-    public static void chooseCategory()
+    public void chooseCategory()
     {
         
     }
@@ -79,5 +79,5 @@ public class Player
     {
         return name;
     }
-    
 }
+
