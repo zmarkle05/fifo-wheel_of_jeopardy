@@ -35,7 +35,8 @@ public class Category
     public void addQuestion(String question,
                             String answer)
     {
-        catQuestions.add(new Question(question, answer, 0));
+        
+        catQuestions.add(new Question(question, answer,200*(catQuestions.size()+1)));
     }
     
     public Question removeQuestion()
