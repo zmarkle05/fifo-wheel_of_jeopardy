@@ -73,6 +73,15 @@ public class Database
         return question;
     } 
     
+    public boolean hasQuestions() {
+        if (category1.outOfQuestions() && category2.outOfQuestions() 
+                && category3.outOfQuestions() && category4.outOfQuestions()
+                && category5.outOfQuestions() && category6.outOfQuestions()) {
+            return false;
+        }
+        return true;
+    }
+    
     public String[] getCategories()
     {
         String[] catNames = new String[6];
@@ -138,8 +147,6 @@ public class Database
     }
     
     public Database getDatabase() {
-        
-        
         return this;
     }
     

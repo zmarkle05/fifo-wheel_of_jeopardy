@@ -22,11 +22,12 @@ public class GameBoard {
 
     private Button[] catButtons;
     private HashMap<String,Squares> gameSquares;
-    
-    public GameBoard(Database db,
+    private UserInterface ui;
+    public GameBoard(UserInterface ui, Database db,
                      Composite composite,
                      int roundNum)
     {
+        this.ui = ui;
         String[] categories = db.getCategories();
         catButtons  = new Button[6];
         gameSquares = new HashMap<String,Squares>(); 
@@ -75,18 +76,19 @@ public class GameBoard {
             @Override
             public void handleEvent(Event event) {
                 if (event.widget == catButtons[0]){
-                    enableDisableCategories(false);
+                    ui.updateQuestion(ui.getDb().getQuestion(catButtons[0].getText()));
                 } else if (event.widget == catButtons[1]) {
-                    enableDisableCategories(false);
+                    ui.updateQuestion(ui.getDb().getQuestion(catButtons[1].getText()));
                 } else if (event.widget == catButtons[2]) {
-                    enableDisableCategories(false);
+                    ui.updateQuestion(ui.getDb().getQuestion(catButtons[2].getText()));
                 } else if (event.widget == catButtons[3]) {
-                    enableDisableCategories(false);
+                    ui.updateQuestion(ui.getDb().getQuestion(catButtons[3].getText()));
                 } else if (event.widget == catButtons[4]) {
-                    enableDisableCategories(false);
+                    ui.updateQuestion(ui.getDb().getQuestion(catButtons[4].getText()));
                 } else if (event.widget == catButtons[5]) {
-                    enableDisableCategories(false);
+                    ui.updateQuestion(ui.getDb().getQuestion(catButtons[5].getText()));
                 }
+                enableDisableCategories(false);
             }
         };
         

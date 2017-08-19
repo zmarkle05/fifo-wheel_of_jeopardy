@@ -130,22 +130,25 @@ public class Wheel
                 
                 display.asyncExec(new Runnable() {
                         public void run() {
-                           ui.updateQuestion(ui.getDb().getQuestion(getCurrentSector().getName()));
                            if (getCurrentSector().getType() == SectorType.LOSE_TURN) {
                                 ui.enableSubmit(false);
                                 ui.enableSpin(true);
+                                ui.loseTurn();
                            } else if (getCurrentSector().getType() == SectorType.BANKRUPT) {
                                 ui.enableSubmit(false);
                                 ui.enableSpin(true);
+                                ui.bankrupt();
                            } else if (getCurrentSector().getType() == SectorType.FREE_TURN) {
                                 ui.enableSubmit(false);  
                                 ui.enableSpin(true);
                            } else if (getCurrentSector().getType() == SectorType.OPP_CHOICE) {
                                 ui.enableSubmit(true);
                                 ui.enableSpin(false);
+                                ui.chooseCategory();
                            } else if (getCurrentSector().getType() == SectorType.PLAYER_CHOICE) {
                                 ui.enableSubmit(true);
                                 ui.enableSpin(false);
+                                ui.chooseCategory();
                            } else if (getCurrentSector().getType() == SectorType.SPIN_AGAIN) {
                                 ui.enableSubmit(false);
                                 ui.enableSpin(true);
@@ -153,6 +156,8 @@ public class Wheel
                                 ui.enableSubmit(true);
                                 ui.enableSpin(false);
                            }
+                           ui.updateQuestion(ui.getDb().getQuestion(getCurrentSector().getName()));
+                           ui.updateInfo();
                            ui.startTimer();
                            
                         }

@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Text;
 import wheelofjeopardy.Database.Database;
 import wheelofjeopardy.Database.Question;
 import wheelofjeopardy.GameEngine.GameEngine;
+import wheelofjeopardy.UserInterface.Sector.SectorType;
 
 /**
  *
@@ -137,7 +138,7 @@ public class UserInterface {
         innerRight.setLayoutData( fData );
         
         wheel = new Wheel(this,db.getCategories(), innerLeftBottom, SWT.NONE);
-        board = new GameBoard(db,innerRight, 1);
+        board = new GameBoard(this, db,innerRight, 1);
         infoDisplay = new InformationDisplay(this, topInfoBanner, SWT.NONE);
         infoDisplay.updateInfoWithTurn(gameEngine.getCurPlayer().getName(),
             gameEngine.getStats().player1Score, gameEngine.getStats().player2Score, 
@@ -197,6 +198,13 @@ public class UserInterface {
         if (question != null){ 
             questionText.setText(question.getQuestion());
             board.hideSquare(question.getQuestion());
+        } else {
+            submitBtn.setEnabled(false);
+            spinBtn.setEnabled(true);
+            MessageBox outQuestionsBox = new MessageBox(display.getActiveShell(), SWT.ICON_INFORMATION | SWT.OK);;
+            outQuestionsBox.setText("SPIN AGAIN");
+            outQuestionsBox.setMessage("No more questions in category. Spin again!");
+            int result = outQuestionsBox.open();
         }
     }
     
@@ -242,7 +250,8 @@ public class UserInterface {
     public void enableSubmit(boolean enabled) {
         submitBtn.setEnabled(enabled);
     }
-     public boolean useFreeTokens()
+    
+    public boolean useFreeTokens()
     {
         int numOfTokens = gameEngine.getCurPlayer().getFreeTokens();
         
@@ -274,5 +283,42 @@ public class UserInterface {
         }
         return false;
     }
+    
+    public void chooseCategory() {
+        board.enableDisableCategories(true);
+        MessageBox choiceBox = new MessageBox(display.getActiveShell(), SWT.ICON_INFORMATION | SWT.OK);;
+        submitBtn.setEnabled(false);
+        if (wheel.getCurrentSector().getType() == SectorType.OPP_CHOICE) {
+            choiceBox.setText("OPPONENT'S CHOCIE");
+            choiceBox.setMessage(gameEngine.getOppositePlayer().getName() + 
+                    " select a category for " + gameEngine.getCurPlayer().getName() + ".");
+        } else if (wheel.getCurrentSector().getType() == SectorType.PLAYER_CHOICE) {
+            choiceBox.setText("PLAYER'S CHOCIE");
+            choiceBox.setMessage(gameEngine.getCurPlayer().getName() + 
+                    " select a category for yourself!");
+        }
+        int result = choiceBox.open();
+    }
+    
+    public void bankrupt() {
+        gameEngine.bankrupt();
+    }
+    
+    public void loseTurn() {
+        gameEngine.loseTurn();
+    }
+    
+    public void declareWinner(int player) {
+        MessageBox endGameBox = new MessageBox(display.getActiveShell(), SWT.ICON_INFORMATION | SWT.OK);;
+        endGameBox.setText("GAME END");
+
+        if (player > 0 ) {
+            endGameBox.setMessage("THE WINNER IS PLAYER " + player + "!");
+        } else {
+            endGameBox.setMessage("TIE GAME!");
+        }
+        int result = endGameBox.open();
+    }
+   
 }
 
