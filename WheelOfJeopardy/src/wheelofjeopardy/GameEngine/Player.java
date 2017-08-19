@@ -27,17 +27,10 @@ public class Player
         return isTurn;
     }
     
-    public boolean useToken()
+    public void useToken()
     {
-        if (numFreeTokens == 0)
-        {
-            return false;
-        }
-        else
-        {
-            numFreeTokens--;
-            return true;
-        }
+        System.out.println(numFreeTokens);
+        numFreeTokens = numFreeTokens -1;
     }
     
     public void spinWheel()

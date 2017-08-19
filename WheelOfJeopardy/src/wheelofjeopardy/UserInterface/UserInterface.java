@@ -194,9 +194,10 @@ public class UserInterface {
     
     public void updateQuestion(Question question) {
         gameEngine.setCurrentQuestion(question);
-        if (question != null) 
+        if (question != null){ 
             questionText.setText(question.getQuestion());
-        board.hideSquare(question.getQuestion());
+            board.hideSquare(question.getQuestion());
+        }
     }
     
     public void startTimer() {
@@ -241,13 +242,13 @@ public class UserInterface {
     public void enableSubmit(boolean enabled) {
         submitBtn.setEnabled(enabled);
     }
-     public void useFreeTokens()
+     public boolean useFreeTokens()
     {
         int numOfTokens = gameEngine.getCurPlayer().getFreeTokens();
         
         if (numOfTokens > 0 && gameEngine.getNumberOfSpins() < 50)
         {
-            MessageBox useToken = new MessageBox(display.getActiveShell(), SWT.ICON_QUESTION | SWT.OK | SWT.NO);
+            MessageBox useToken = new MessageBox(display.getActiveShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
             useToken.setText("Free Token");
             useToken.setMessage(gameEngine.getCurPlayer().getName() + 
                     " Would you like to use a free token and spin again?");
@@ -259,16 +260,19 @@ public class UserInterface {
                 case SWT.YES:
                 {
                     gameEngine.playerUseToken(true);
-                    break;
+                    return true;
+                  
                 }
                 case SWT.NO:
                 {
-                    gameEngine.endTurn();
-                    break;
+                    
+                    return false;
+                    
                 }
             }
             
         }
+        return false;
     }
 }
 

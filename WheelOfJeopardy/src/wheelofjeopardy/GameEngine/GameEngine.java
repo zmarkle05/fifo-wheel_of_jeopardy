@@ -25,7 +25,7 @@ public class GameEngine
         
 
         player2 = new Player("Player 2", false);
-        
+        player1.incrementTokens();
         
         statTracker = new StatisticTracker();
         this.database = database;
@@ -58,36 +58,14 @@ public class GameEngine
                     System.out.println("PLAYER 2: " + statTracker.player2Score);
                 }
            
-                endTurn();
+               endTurn();
             }
-            else if (player1.isTurn() && player1.getFreeTokens() > 0 && 
-                     statTracker.getNumberOfSpins() != 50)
-            {
-                // TODO prompt user if they would like to use a token
-                if (true) //player selected to use token
-                {
-                    endTurn();
-                }
-                else
-                {
-                    endTurn();
-                }
-            }
-            else if (player2.isTurn() && player2.getFreeTokens() > 0 && 
-                     statTracker.getNumberOfSpins() != 50)
-            {
-                // TODO prompt user if they would like to use a token
-                if (true) //player selected to use token
-                {
-                     endTurn();
-                }
-                else
-                {
-                    endTurn();
-                }
-            } 
+              
             else {
-                endTurn();
+                boolean choice = ui.useFreeTokens();  
+                if (!choice) {
+                    endTurn();
+                }
             }
         }
         else
@@ -301,6 +279,7 @@ public class GameEngine
         if (useToken)
         {
             getCurPlayer().useToken();
+            
         }
         else
         {
