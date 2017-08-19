@@ -49,12 +49,12 @@ public class GameEngine
             {
                 if (player1.isTurn())
                 {
-                    statTracker.incrementScore(1);
+                    statTracker.incrementScore(1, curQuestion.getPointValue());
                     System.out.println("PLAYER 1: " + statTracker.player1Score);
                 }
                 else
                 {
-                    statTracker.incrementScore(2);            
+                    statTracker.incrementScore(2, curQuestion.getPointValue());            
                     System.out.println("PLAYER 2: " + statTracker.player2Score);
                 }
            

@@ -29,15 +29,15 @@ public class StatisticTracker
                 
     }
     
-   public void incrementScore(int playerNum)
+   public void incrementScore(int playerNum, int points)
    {
        if (playerNum == 1)
        {
-           player1Score++;
+           player1Score += points;
        }
        else
        {
-           player2Score++;
+           player2Score += points;
        }
        
    }
