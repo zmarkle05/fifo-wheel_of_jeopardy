@@ -23,12 +23,11 @@ public class SectorTest {
     @Test
     public void testGetType() {
         System.out.println("getType");
-        Sector instance = null;
-        Sector.SectorType expResult = null;
+        Sector.SectorType secType = Sector.SectorType.FREE_TURN;
+        String secName = "Testing";
+        Sector instance = new Sector(secType, secName);
         Sector.SectorType result = instance.getType();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertEquals(secType, instance.getType());
     }
 
     /**
@@ -37,12 +36,11 @@ public class SectorTest {
     @Test
     public void testGetName() {
         System.out.println("getName");
-        Sector instance = null;
-        String expResult = "";
-        String result = instance.getName();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Sector.SectorType secType = Sector.SectorType.FREE_TURN;
+        String secName = "Testing";
+        Sector instance = new Sector(secType, secName);
+        Sector.SectorType result = instance.getType();
+        assertEquals(secName, instance.getName());
     }
     
 }

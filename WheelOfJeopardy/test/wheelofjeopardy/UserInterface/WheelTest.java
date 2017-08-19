@@ -7,6 +7,11 @@ package wheelofjeopardy.UserInterface;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+import wheelofjeopardy.Database.Database;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  *
@@ -14,21 +19,19 @@ import static org.junit.Assert.*;
  */
 public class WheelTest {
     
-    public WheelTest() {
-    }
-
     /**
      * Test of getCurrentSector method, of class Wheel.
      */
     @Test
     public void testGetCurrentSector() {
         System.out.println("getCurrentSector");
-        Wheel instance = null;
-        Sector expResult = null;
-        Sector result = instance.getCurrentSector();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Display display = new Display();
+        Shell shell = new Shell(display);
+        Composite composite = new Composite(shell, SWT.BORDER);
+        Database db = new Database("database.csv");
+        UserInterface ui = new UserInterface(db);
+        Wheel instance = new Wheel(ui, db.getCategories(), composite, 0);
+        assertNotNull(instance.getCurrentSector());
     }
 
     /**
@@ -37,12 +40,13 @@ public class WheelTest {
     @Test
     public void testGetCurrSectorName() {
         System.out.println("getCurrSectorName");
-        Wheel instance = null;
-        String expResult = "";
-        String result = instance.getCurrSectorName();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Display display = new Display();
+        Shell shell = new Shell(display);
+        Composite composite = new Composite(shell, SWT.BORDER);
+        Database db = new Database("database.csv");
+        UserInterface ui = new UserInterface(db);
+        Wheel instance = new Wheel(ui, db.getCategories(), composite, 0);
+        assertNotNull(instance.getCurrSectorName());
     }
 
     /**
@@ -51,10 +55,30 @@ public class WheelTest {
     @Test
     public void testSpin() {
         System.out.println("spin");
-        Wheel instance = null;
+        Display display = new Display();
+        Shell shell = new Shell(display);
+        Composite composite = new Composite(shell, SWT.BORDER);
+        Database db = new Database("database.csv");
+        UserInterface ui = new UserInterface(db);
+        Wheel instance = new Wheel(ui, db.getCategories(), composite, 0);
         instance.spin();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
-    
+
+    /**
+     * Test of setSpinning, isSpinning methods, of class Wheel.
+     */
+    @Test
+    public void testSpinning() {
+        System.out.println("spinning");
+        Display display = new Display();
+        Shell shell = new Shell(display);
+        Composite composite = new Composite(shell, SWT.BORDER);
+        Database db = new Database("database.csv");
+        UserInterface ui = new UserInterface(db);
+        Wheel instance = new Wheel(ui, db.getCategories(), composite, 0);
+        instance.setSpinning(false);
+        assertFalse(instance.isSpinning());
+        instance.setSpinning(true);
+        assertTrue(instance.isSpinning());
+    }    
 }

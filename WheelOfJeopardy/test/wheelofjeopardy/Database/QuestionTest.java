@@ -19,9 +19,6 @@ public class QuestionTest {
     private final int value	    = 100;
     private final Question instance = new Question(question, answer, value);
     
-    public QuestionTest() {
-    }
-
     /**
      * Test of getAnswer method, of class Question.
      */
@@ -46,7 +43,7 @@ public class QuestionTest {
     @Test
     public void testGetPointValue() {
         System.out.println("getPointValue");
-        assertEquals(value, instance.getAnswer());
+        assertEquals(value, instance.getPointValue());
     }
 
     /**

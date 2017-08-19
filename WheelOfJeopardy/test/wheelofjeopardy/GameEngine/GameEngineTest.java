@@ -8,6 +8,9 @@ package wheelofjeopardy.GameEngine;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import wheelofjeopardy.UserInterface.Sector;
+import wheelofjeopardy.UserInterface.UserInterface;
+import wheelofjeopardy.Database.Database;
+
 
 /**
  *
@@ -25,18 +28,10 @@ public class GameEngineTest {
     public void testCompareAnswer() {
         System.out.println("compareAnswer");
         String category = "category";
-        GameEngine instance = new GameEngine();
+        Database database = new Database("database.csv");
+        UserInterface ui  = new UserInterface(database);
+        GameEngine instance = new GameEngine(database, ui);
         instance.compareAnswer(category);
-    }
-
-    /**
-     * Test of endRound method, of class GameEngine.
-     */
-    @Test
-    public void testEndRound() {
-        System.out.println("endRound");
-        GameEngine instance = new GameEngine();
-        instance.endRound();
     }
 
     /**
@@ -45,7 +40,10 @@ public class GameEngineTest {
     @Test
     public void testEndGame() {
         System.out.println("endGame");
-        GameEngine.endGame();
+        Database database = new Database("database.csv");
+        UserInterface ui  = new UserInterface(database);
+        GameEngine instance = new GameEngine(database, ui);
+        instance.endGame();
     }
 
     /**
@@ -54,7 +52,10 @@ public class GameEngineTest {
     @Test
     public void testEndTurn() {
         System.out.println("endTurn");
-        GameEngine.endTurn();
+        Database database = new Database("database.csv");
+        UserInterface ui  = new UserInterface(database);
+        GameEngine instance = new GameEngine(database, ui);
+        instance.endTurn();
     }
 
     /**
@@ -63,7 +64,10 @@ public class GameEngineTest {
     @Test
     public void testDeclareWinner() {
         System.out.println("declareWinner");
-        GameEngine.declareWinner();
+        Database database = new Database("database.csv");
+        UserInterface ui  = new UserInterface(database);
+        GameEngine instance = new GameEngine(database, ui);
+        instance.declareWinner();
     }
 
     /**
@@ -72,8 +76,11 @@ public class GameEngineTest {
     @Test
     public void testPlayGame() {
         System.out.println("playGame");
-        GameEngine instance = new GameEngine();
-        instance.playGame();
+        Sector sector = new Sector(Sector.SectorType.BANKRUPT, "Bankrupt");
+        Database database = new Database("database.csv");
+        UserInterface ui  = new UserInterface(database);
+        GameEngine instance = new GameEngine(database, ui);
+        instance.playGame(sector);
     }
 
     /**
@@ -82,8 +89,10 @@ public class GameEngineTest {
     @Test
     public void testPerformSectorOperation() {
         System.out.println("performSectorOperation");
-        Sector.SectorType sector = Sector.SectorType.BANKRUPT;
-        GameEngine instance = new GameEngine();
+        Sector sector = new Sector(Sector.SectorType.BANKRUPT, "Bankrupt");
+        Database database = new Database("database.csv");
+        UserInterface ui  = new UserInterface(database);
+        GameEngine instance = new GameEngine(database, ui);
         instance.performSectorOperation(sector);
     }
 
@@ -93,7 +102,9 @@ public class GameEngineTest {
     @Test
     public void testLoseTurn() {
         System.out.println("loseTurn");
-        GameEngine instance = new GameEngine();
+        Database database = new Database("database.csv");
+        UserInterface ui  = new UserInterface(database);
+        GameEngine instance = new GameEngine(database, ui);
         instance.loseTurn();
     }
 
@@ -103,7 +114,9 @@ public class GameEngineTest {
     @Test
     public void testBankrupt() {
         System.out.println("bankrupt");
-        GameEngine instance = new GameEngine();
+        Database database = new Database("database.csv");
+        UserInterface ui  = new UserInterface(database);
+        GameEngine instance = new GameEngine(database, ui);
         instance.bankrupt();
     }
     

@@ -101,7 +101,8 @@ public class StatisticTrackerTest {
     @Test
     public void testReset() {
         System.out.println("reset");
-        StatisticTracker.reset();
+        StatisticTracker instance = new StatisticTracker();
+        instance.reset();
     }
     
 }

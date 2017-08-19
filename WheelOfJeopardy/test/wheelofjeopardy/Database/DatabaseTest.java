@@ -9,9 +9,6 @@ import static org.junit.Assert.*;
  * @author Zac
  */
 public class DatabaseTest {
-    
-    public DatabaseTest() {
-    }
 
     /**
      * Test of getQuestion method, of class Database.
@@ -20,7 +17,7 @@ public class DatabaseTest {
     public void testGetQuestion() {
         System.out.println("getQuestion");
 	String[] categories;
-        String csvPath = "testCSV.csv";
+        String csvPath = "database.csv";
         Database instance = new Database(csvPath);
         Question question;
         
@@ -36,7 +33,7 @@ public class DatabaseTest {
     public void testGetCategories() {
         System.out.println("getCategories");
 	String[] categories;
-        String csvPath = "testCSV.csv";
+        String csvPath = "database.csv";
         Database instance = new Database(csvPath);
         String[] result = instance.getCategories();
 
@@ -50,7 +47,7 @@ public class DatabaseTest {
     @Test
     public void testAddQuestionAnswer() {
         System.out.println("addQuestionAnswer");
-        String csvPath = "testCSV.csv";
+        String csvPath = "database.csv";
         Database instance = new Database(csvPath);
         
         // TODO if time for additional functionality
@@ -62,7 +59,7 @@ public class DatabaseTest {
     @Test
     public void testWriteCSV() {
         System.out.println("writeCSV");
-        String csvPath = "testCSV.csv";
+        String csvPath = "database.csv";
         Database instance = new Database(csvPath);
         
         // TODO if time for additional functionality

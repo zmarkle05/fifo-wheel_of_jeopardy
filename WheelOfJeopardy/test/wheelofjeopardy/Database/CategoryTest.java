@@ -1,5 +1,6 @@
 package wheelofjeopardy.Database;
 
+import java.util.Queue;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
@@ -11,9 +12,6 @@ import static org.junit.Assert.*;
  * @author Zac
  */
 public class CategoryTest {
-    
-    public CategoryTest() {
-    }
     
     /**
      * Test of getCatName method, of class Category.
@@ -47,13 +45,12 @@ public class CategoryTest {
         assertFalse(instance.outOfQuestions());
 
         // Retrieve question
-        Question question = instance.retrieveQuestion();
-        assertEquals(ques, question.getQuestion());
-        assertEquals(answ, question.getAnswer());
+        Queue<Question> questions = instance.retrieveQuestions();
+        assertNotNull(questions);
         assertFalse(instance.outOfQuestions());
 
         // Remove question
-        question = instance.removeQuestion();
+        Question question = instance.removeQuestion();
         assertEquals(ques, question.getQuestion());
         assertEquals(answ, question.getAnswer());
         assertTrue(instance.outOfQuestions());

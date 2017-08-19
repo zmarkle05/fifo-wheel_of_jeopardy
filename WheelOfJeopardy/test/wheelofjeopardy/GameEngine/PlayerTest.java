@@ -63,7 +63,9 @@ public class PlayerTest {
     @Test
     public void testSpinWheel() {
         System.out.println("spinWheel");
-        Player.spinWheel();
+        String name = "Bob";
+        Player instance = new Player(name, true);
+        instance.spinWheel();
     }
 
     /**
@@ -72,7 +74,9 @@ public class PlayerTest {
     @Test
     public void testAnswerQuestion() {
         System.out.println("answerQuestion");
-        Player.answerQuestion();
+        String name = "Bob";
+        Player instance = new Player(name, true);
+        instance.answerQuestion();
     }
 
     /**
@@ -81,6 +85,8 @@ public class PlayerTest {
     @Test
     public void testChooseCategory() {
         System.out.println("chooseCategory");
-        Player.chooseCategory();
+        String name = "Bob";
+        Player instance = new Player(name, true);
+        instance.chooseCategory();
     }
 }

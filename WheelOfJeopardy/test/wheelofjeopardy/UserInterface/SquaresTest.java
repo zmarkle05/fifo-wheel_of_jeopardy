@@ -7,20 +7,28 @@ package wheelofjeopardy.UserInterface;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  *
  * @author Zac
  */
 public class SquaresTest {
-    
-    public SquaresTest() {
-    }
 
+    /**
+     * Test of hide method, of class Squares.
+     */
     @Test
-    public void testSomeMethod() {
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+    public void testHide() {
+        System.out.println("hide");
+        Display display = new Display();
+        Shell shell = new Shell(display);
+        Composite composite = new Composite(shell, SWT.BORDER);
+        Squares instance = new Squares(composite, "Blah");
+        instance.hide();
     }
     
 }
