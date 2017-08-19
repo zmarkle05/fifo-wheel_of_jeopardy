@@ -1,1 +1,4 @@
 *.class
+/WheelOfJeopardy/nbproject/private/
+/WheelOfJeopardy/build/
+/WheelOfJeopardy/dist/
